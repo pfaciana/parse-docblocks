@@ -1,0 +1,94 @@
+{
+	"description": "The third parameter can also be an associative array of all remaining parameters\n\nabc\n\ndef",
+	"summary": "Manually set all the cookie arguments",
+	"tags": [
+		{
+			"desc": "Name",
+			"name": "$name",
+			"optional": false,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": "Value\nLine 2 for Value",
+			"name": "$value",
+			"optional": false,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": "Expires",
+			"flags": [
+				{
+					"desc": "Can be all parameters in an associative array\nstill the note!",
+					"type": "note"
+				},
+				{
+					"desc": "Hi!",
+					"type": "warning"
+				}
+			],
+			"name": "$expires",
+			"optional": false,
+			"tagName": "@param",
+			"type": "mixed"
+		},
+		{
+			"desc": "Path",
+			"name": "$path",
+			"optional": false,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": "Domain",
+			"name": "$domain",
+			"optional": false,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"defaultValue": false,
+			"desc": "Secure.",
+			"name": "$secure",
+			"optional": false,
+			"tagName": "@param",
+			"type": "bool"
+		},
+		{
+			"desc": "",
+			"name": "$httponly",
+			"optional": false,
+			"tagName": "@param",
+			"type": "bool"
+		},
+		{
+			"desc": "SameSite",
+			"name": "$samesite",
+			"optional": true,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": "Max-Age",
+			"name": "$maxage",
+			"optional": true,
+			"tagName": "@param",
+			"type": "int"
+		},
+		{
+			"defaultValue": "OBJECT",
+			"desc": "The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which\ncorrespond to a WP_Post object, an associative array, or a numeric array,\nrespectively.",
+			"name": "$output",
+			"optional": true,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": "`TRUE` on success",
+			"name": null,
+			"tagName": "@return",
+			"type": "bool"
+		}
+	]
+}

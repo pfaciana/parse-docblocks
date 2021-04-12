@@ -1,0 +1,39 @@
+{
+	"name": "parse-docblocks",
+	"version": "0.0.1",
+	"description": "Parses PHP and JavaScript DocBlocks",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pfaciana/parse-docblocks.git"
+	},
+	"author": "Phil Faciana <phil@renderdev.com> (https://renderdev.com/)",
+	"license": "MIT",
+	"homepage": "https://github.com/pfaciana/parse-docblocks",
+	"scripts": {
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@babel/core": "^7",
+		"@babel/preset-env": "^7",
+		"@babel/preset-react": "^7",
+		"babelify": "^10",
+		"browserify-buffer": "^1",
+		"gulp": "^4",
+		"gulp-babel": "^8",
+		"gulp-brotli": "^3",
+		"gulp-concat": "^2",
+		"gulp-conditional-eol": "^1",
+		"gulp-create-tasks": "^1",
+		"gulp-debug": "^4",
+		"gulp-if": "^3",
+		"gulp-rename": "^2",
+		"gulp-size": "^3",
+		"gulp-terser": "^2",
+		"jest": "^26",
+		"through2": "^4"
+	},
+	"dependencies": {
+		"es5-util": "^1"
+	}
+}

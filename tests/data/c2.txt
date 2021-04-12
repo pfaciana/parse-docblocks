@@ -1,0 +1,27 @@
+	/**
+	 * Manually set all the cookie arguments
+	 *
+	 * The third parameter can also be an associative array of all remaining parameters
+	 *
+	 * abc
+	 *
+	 * def
+	 *
+	 * @param string $name     Name
+	 * @param string $value    Value
+	 *                         Line 2 for Value
+	 * @param mixed  $expires  Expires
+	 *                         !!note: Can be all parameters in an associative array
+	 *                         still the note!
+	 *                         !warning              Hi!
+	 * @param string $path     Path
+	 * @param string $domain   Domain
+	 * @param bool   $secure   Secure. Default is false
+	 * @param bool   $httponly
+	 * @param string [$samesite] SameSite
+	 * @param int    $maxage?   Max-Age
+	 * @param string      $output Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which
+	 *                             correspond to a WP_Post object, an associative array, or a numeric array,
+	 *                             respectively. Default OBJECT.
+	 * @return bool `TRUE` on success
+	 */

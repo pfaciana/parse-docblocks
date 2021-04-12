@@ -1,0 +1,364 @@
+{
+	"summary": "Registers a post type.",
+	"description": "Note: Post type registrations should not be hooked before the {@see 'init'} action. Also, any taxonomy connections should be registered via the `$taxonomies` argument to ensure consistency when hooks such as {@see 'parse_query'} or {@see 'pre_get_posts'} are used.\n\nPost types can support any number of built-in core features such as meta boxes, custom fields, post thumbnails, post statuses, comments, and more. See the `$supports` argument for a complete list of supported features.",
+	"tags": [
+		{
+			"desc": "",
+			"name": null,
+			"tagName": "@since",
+			"type": "2.9.0"
+		},
+		{
+			"desc": "The `show_ui` argument is now enforced on the new post screen.",
+			"name": null,
+			"tagName": "@since",
+			"type": "3.0.0"
+		},
+		{
+			"desc": "The `show_ui` argument is now enforced on the post type listing\nscreen and post editing screen.",
+			"name": null,
+			"tagName": "@since",
+			"type": "4.4.0"
+		},
+		{
+			"desc": "Post type object returned is now an instance of `WP_Post_Type`.",
+			"name": null,
+			"tagName": "@since",
+			"type": "4.6.0"
+		},
+		{
+			"desc": "Introduced `show_in_rest`, `rest_base` and `rest_controller_class`\narguments to register the post type in REST API.",
+			"name": null,
+			"tagName": "@since",
+			"type": "4.7.0"
+		},
+		{
+			"desc": "The `template` and `template_lock` arguments were added.",
+			"name": null,
+			"tagName": "@since",
+			"type": "5.0.0"
+		},
+		{
+			"desc": "The `supports` argument will now accept an array of arguments for a feature.",
+			"name": null,
+			"tagName": "@since",
+			"type": "5.3.0"
+		},
+		{
+			"desc": "List of post types.",
+			"name": "$wp_post_types",
+			"optional": false,
+			"tagName": "@global",
+			"type": "array"
+		},
+		{
+			"desc": "Post type key. Must not exceed 20 characters and may\nonly contain lowercase alphanumeric characters, dashes,\nand underscores. See sanitize_key().",
+			"name": "$post_type",
+			"optional": false,
+			"tagName": "@param",
+			"type": "string"
+		},
+		{
+			"desc": {
+				"description": null,
+				"summary": "Array or string of arguments for registering a post type.",
+				"tags": [
+					{
+						"defaultValue": "value of $labels['name']",
+						"desc": "Name of the post type shown in the menu. Usually plural.",
+						"name": "$label",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"desc": "An array of labels for this post type. If not set, post\nlabels are inherited for non-hierarchical types and page\nlabels for hierarchical ones. See get_post_type_labels() for a full\nlist of supported labels.",
+						"name": "$labels",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					},
+					{
+						"defaultValue": "empty",
+						"desc": "A short descriptive summary of what the post type is.",
+						"name": "$description",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"defaultValue": false,
+						"desc": "Whether a post type is intended for use publicly either via\nthe admin interface or by front-end users. While the default\nsettings of $exclude_from_search, $publicly_queryable, $show_ui,\nand $show_in_nav_menus are inherited from public, each does not\nrely on this relationship and controls a very specific intention.",
+						"name": "$public",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": false,
+						"desc": "Whether the post type is hierarchical (e.g. page).",
+						"name": "$hierarchical",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "the opposite value of $public",
+						"desc": "Whether to exclude posts with this post type from front end search\nresults.",
+						"name": "$exclude_from_search",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"desc": "Whether queries can be performed on the front end for the post type\nas part of parse_request(). Endpoints would include:\n?post_type={post_type_key}\n?{post_type_key}={single_post_slug}\n?{post_type_query_var}={single_post_slug}\nIf not set, the default is inherited from $public.",
+						"name": "$publicly_queryable",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "value of $public",
+						"desc": "Whether to generate and allow a UI for managing this post type in the\nadmin.",
+						"name": "$show_ui",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "value of $show_ui",
+						"desc": "Where to show the post type in the admin menu. To work, $show_ui\nmust be true. If true, the post type is shown in its own top level\nmenu. If false, no menu is shown. If a string of an existing top\nlevel menu (eg. 'tools.php' or 'edit.php?post_type=page'), the post\ntype will be placed as a sub-menu of that.",
+						"name": "$show_in_menu",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool|string"
+					},
+					{
+						"defaultValue": "value of $public",
+						"desc": "Makes this post type available for selection in navigation menus.",
+						"name": "$show_in_nav_menus",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "value\nof $show_in_menu",
+						"desc": "Makes this post type available via the admin bar.",
+						"name": "$show_in_admin_bar",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"desc": "Whether to include the post type in the REST API. Set this to true\nfor the post type to be available in the block editor.",
+						"name": "$show_in_rest",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "$post_type",
+						"desc": "To change the base url of REST API route.",
+						"name": "$rest_base",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"defaultValue": "'WP_REST_Posts_Controller'",
+						"desc": "REST API Controller class name.",
+						"name": "$rest_controller_class",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"defaultValue": "null (at the bottom)",
+						"desc": "The position in the menu order the post type should appear. To work,\n$show_in_menu must be true.",
+						"name": "$menu_position",
+						"optional": false,
+						"tagName": "@type",
+						"type": "int"
+					},
+					{
+						"desc": "The url to the icon to be used for this menu. Pass a base64-encoded\nSVG using a data URI, which will be colored to match the color scheme\n-- this should begin with 'data:image/svg+xml;base64,'. Pass the name\nof a Dashicons helper class to use a font icon, e.g.\n'dashicons-chart-pie'. Pass 'none' to leave div.wp-menu-image empty\nso an icon can be added via CSS. Defaults to use the posts icon.",
+						"name": "$menu_icon",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"defaultValue": "'post'",
+						"desc": "The string to use to build the read, edit, and delete capabilities.\nMay be passed as an array to allow for alternative plurals when using\nthis argument as a base to construct the capabilities, e.g.\narray('story', 'stories').",
+						"name": "$capability_type",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					},
+					{
+						"desc": "Array of capabilities for this post type. $capability_type is used\nas a base to construct capabilities by default.\nSee get_post_type_capabilities().",
+						"name": "$capabilities",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					},
+					{
+						"defaultValue": false,
+						"desc": "Whether to use the internal default meta capability handling.",
+						"name": "$map_meta_cap",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "an array containing 'title' and 'editor'",
+						"desc": "Core feature(s) the post type supports. Serves as an alias for calling\nadd_post_type_support() directly. Core features include 'title',\n'editor', 'comments', 'revisions', 'trackbacks', 'author', 'excerpt',\n'page-attributes', 'thumbnail', 'custom-fields', and 'post-formats'.\nAdditionally, the 'revisions' feature dictates whether the post type\nwill store revisions, and the 'comments' feature dictates whether the\ncomments count will show on the edit screen. A feature can also be\nspecified as an array of arguments to provide additional information\nabout supporting that feature.\nExample: `array( 'my_feature', array( 'field' => 'value' ) )`.",
+						"name": "$supports",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					},
+					{
+						"defaultValue": null,
+						"desc": "Provide a callback function that sets up the meta boxes for the\nedit form. Do remove_meta_box() and add_meta_box() calls in the\ncallback.",
+						"name": "$register_meta_box_cb",
+						"optional": false,
+						"tagName": "@type",
+						"type": "callable"
+					},
+					{
+						"defaultValue": "empty array",
+						"desc": "An array of taxonomy identifiers that will be registered for the\npost type. Taxonomies can be registered later with register_taxonomy()\nor register_taxonomy_for_object_type().",
+						"name": "$taxonomies",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					},
+					{
+						"defaultValue": false,
+						"desc": "Whether there should be post type archives, or if a string, the\narchive slug to use. Will generate the proper rewrite rules if\n$rewrite is enabled.",
+						"name": "$has_archive",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool|string"
+					},
+					{
+						"desc": {
+							"description": null,
+							"summary": "Triggers the handling of rewrites for this post type. To prevent rewrite, set to false. Defaults to true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
+							"tags": [
+								{
+									"desc": "Customize the permastruct slug. Defaults to $post_type key.",
+									"name": "$slug",
+									"optional": false,
+									"tagName": "@type",
+									"type": "string"
+								},
+								{
+									"defaultValue": true,
+									"desc": "Whether the permastruct should be prepended with WP_Rewrite::$front.",
+									"name": "$with_front",
+									"optional": false,
+									"tagName": "@type",
+									"type": "bool"
+								},
+								{
+									"defaultValue": "value of $has_archive",
+									"desc": "Whether the feed permastruct should be built for this post type.",
+									"name": "$feeds",
+									"optional": false,
+									"tagName": "@type",
+									"type": "bool"
+								},
+								{
+									"defaultValue": true,
+									"desc": "Whether the permastruct should provide for pagination.",
+									"name": "$pages",
+									"optional": false,
+									"tagName": "@type",
+									"type": "bool"
+								},
+								{
+									"desc": "Endpoint mask to assign. If not specified and permalink_epmask is set,\ninherits from $permalink_epmask. If not specified and permalink_epmask\nis not set, defaults to EP_PERMALINK.",
+									"name": "$ep_mask",
+									"optional": false,
+									"tagName": "@type",
+									"type": "const"
+								}
+							]
+						},
+						"name": "$rewrite",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool|array"
+					},
+					{
+						"desc": "Sets the query_var key for this post type. Defaults to $post_type\nkey. If false, a post type cannot be loaded at\n?{query_var}={post_slug}. If specified as a string, the query\n?{query_var_string}={post_slug} will be valid.",
+						"name": "$query_var",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string|bool"
+					},
+					{
+						"defaultValue": true,
+						"desc": "Whether to allow this post type to be exported.",
+						"name": "$can_export",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": null,
+						"desc": "Whether to delete posts of this type when deleting a user.\n- If true, posts of this type belonging to the user will be moved\nto Trash when the user is deleted.\n- If false, posts of this type belonging to the user will *not*\nbe trashed or deleted.\n- If not set (the default), posts are trashed if post type supports\nthe 'author' feature. Otherwise posts are not trashed or deleted.",
+						"name": "$delete_with_user",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "empty array",
+						"desc": "Array of blocks to use as the default initial state for an editor\nsession. Each item should be an array containing block name and\noptional attributes.",
+						"name": "$template",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					},
+					{
+						"defaultValue": false,
+						"desc": "Whether the block template should be locked if $template is set.\n- If set to 'all', the user is unable to insert new blocks,\nmove existing blocks and delete blocks.\n- If set to 'insert', the user is able to move existing blocks\nbut is unable to insert new blocks and delete blocks.",
+						"name": "$template_lock",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string|false"
+					},
+					{
+						"defaultValue": false,
+						"desc": "FOR INTERNAL USE ONLY! True if this post type is a native or\n\"built-in\" post_type.",
+						"name": "$_builtin",
+						"optional": false,
+						"tagName": "@type",
+						"type": "bool"
+					},
+					{
+						"defaultValue": "'post.php?post=%d'",
+						"desc": "FOR INTERNAL USE ONLY! URL segment to use for edit link of\nthis post type.",
+						"name": "$_edit_link",
+						"optional": false,
+						"tagName": "@type",
+						"type": "string"
+					}
+				]
+			},
+			"name": "$args",
+			"optional": false,
+			"tagName": "@param",
+			"type": "array|string"
+		},
+		{
+			"desc": "The registered post type object on success,\nWP_Error object on failure.",
+			"name": null,
+			"tagName": "@return",
+			"type": "WP_Post_Type|WP_Error"
+		}
+	]
+}

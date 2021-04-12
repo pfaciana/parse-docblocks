@@ -1,0 +1,11 @@
+/**
+ * Summary
+ *
+ * Description Line 1
+ * Description Line 2
+ *
+ * Description Line 3
+ *
+ * @param string $name Name
+ * @return bool `TRUE` on success
+ */

@@ -1,0 +1,19 @@
+{
+	"summary": "Summary",
+	"description": "Description Line 1 Description Line 2\n\nDescription Line 3",
+	"tags": [
+		{
+			"tagName": "@param",
+			"type": "string",
+			"name": "$name",
+			"desc": "Name",
+			"optional": false
+		},
+		{
+			"tagName": "@return",
+			"type": "bool",
+			"name": null,
+			"desc": "`TRUE` on success"
+		}
+	]
+}
