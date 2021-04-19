@@ -3,17 +3,18 @@ const parseTag = require('./parseTag');
 const trimLine = require('./trimLine');
 const setOptional = require('./setOptional');
 const setDefaultValue = require('./setDefaultValue');
+const setDefaultObj = require('./setDefaultObj');
 const getLocationIndexes = require('./getLocationIndexes');
 
 const nestedBlocks = {};
 
-function parseComments(input) {
+function parseComments(input, config = {}) {
 	let matches;
 	while (matches = input.match(/([\S\s]*?){(\s(?:[^}{]+|{(?:[^}{]+|{[^}{]*})*})*)}([\S\s]*)/im)) {
 		const uid = getiUID(24);
 		const nestedInput = '/**' + matches[2] + '\n*/';
 		input = matches[1] + uid + matches[3];
-		nestedBlocks[uid] = parseComments(nestedInput);
+		nestedBlocks[uid] = parseComments(nestedInput, config);
 	}
 
 	let comments = {
@@ -43,7 +44,7 @@ function parseComments(input) {
 		comments = setDefaultValue(comments, key);
 	});
 	comments.tags = (comments.tags.map(tag => {
-		tag = parseTag(tag);
+		tag = parseTag(tag, config);
 		if (tag.desc in nestedBlocks) {
 			tag.desc = nestedBlocks[tag.desc];
 			if ('optional' in tag.desc) {
@@ -55,6 +56,7 @@ function parseComments(input) {
 				delete tag.desc.defaultValue;
 			}
 		}
+		tag = setDefaultObj(tag, config);
 		return tag;
 	})).filter(x => x);
 

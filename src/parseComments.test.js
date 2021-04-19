@@ -16,3 +16,16 @@ test.each(table)('%s',
 		expect(parseComments(lines)).toStrictEqual(expected);
 	},
 );
+
+const table2 = [
+	['c4b'],
+];
+
+test.each(table2)('%s',
+	(filename) => {
+		const config = {prefixPragmas: false, prefixVariables: false, typeToArray: true, defaultObj: true};
+		const lines = fs.readFileSync(path.join(__dirname, `/../tests/data/${filename}.txt`), 'utf8');
+		const expected = JSON.parse(fs.readFileSync(path.join(__dirname, `/../tests/data/${filename}.json`), 'utf8'));
+		expect(parseComments(lines, config)).toStrictEqual(expected);
+	},
+);
