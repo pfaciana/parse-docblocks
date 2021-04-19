@@ -79,10 +79,52 @@ const table = [
 		name: null,
 		desc: 'a b c d e f g',
 	}],
+	['@param string $output', {
+		tagName: '@param',
+		type: 'string',
+		name: '$output',
+		desc: '',
+		optional: false,
+	}, {prefixPragmas: true, prefixVariables: true}],
+	['@param string output', {
+		tagName: '@param',
+		type: 'string',
+		name: '$output',
+		desc: '',
+		optional: false,
+	}, {prefixPragmas: true, prefixVariables: true}],
+	['@param string $output', {
+		tagName: 'param',
+		type: 'string',
+		name: 'output',
+		desc: '',
+		optional: false,
+	}, {prefixPragmas: false, prefixVariables: false}],
+	['@param string output', {
+		tagName: 'param',
+		type: 'string',
+		name: 'output',
+		desc: '',
+		optional: false,
+	}, {prefixPragmas: false, prefixVariables: false}],
+	['@param null|array $output', {
+		tagName: '@param',
+		type: 'null|array',
+		name: '$output',
+		desc: '',
+		optional: false,
+	}],
+	['@param null|array $output', {
+		tagName: '@param',
+		type: ['null', 'array'],
+		name: '$output',
+		desc: '',
+		optional: false,
+	}, {typeToArray: true}],
 ];
 
 test.each(table)('%s',
-	(line, expected) => {
-		expect(parseTag(line)).toStrictEqual(expected);
+	(line, expected, config = {}) => {
+		expect(parseTag(line, config)).toStrictEqual(expected);
 	},
 );

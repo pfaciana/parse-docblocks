@@ -3,8 +3,23 @@ const setFlags = require('./setFlags');
 const setOptional = require('./setOptional');
 const setDefaultValue = require('./setDefaultValue');
 const {variablePragmas} = getTagSectionKeys;
+const variableReturnPragmas = [...variablePragmas, ...['@return']];
 
-function parseTag(line) {
+function parseType(obj, config = {}) {
+	config = {...{typeToArray: false}, ...config};
+
+	const tagName = obj.tagName[0] === '@' ? obj.tagName : '@' + obj.tagName;
+
+	if (config.typeToArray && variableReturnPragmas.includes(tagName)) {
+		obj.type = obj.type.split('|');
+	}
+
+	return obj;
+}
+
+function parseTag(line, config = {}) {
+	config = {...{prefixPragmas: null, prefixVariables: null}, ...config};
+
 	let tagName, remaining, matches;
 	[, tagName, remaining] = line.match(/^(\S*)\s*([\S\s]*)/);
 
@@ -28,7 +43,31 @@ function parseTag(line) {
 		tag = setDefaultValue(tag);
 	}
 
+	if (tag.tagName) {
+		if (config.prefixPragmas === true && tag.tagName[0] !== '@') {
+			tag.tagName = '@' + tag.tagName;
+		}
+
+		if (config.prefixPragmas === false && tag.tagName[0] === '@') {
+			tag.tagName = tag.tagName.substring(1);
+		}
+	}
+
+	if (tag.name) {
+		if (config.prefixVariables === true && tag.name[0] !== '$') {
+			tag.name = '$' + tag.name;
+		}
+
+		if (config.prefixVariables === false && tag.name[0] === '$') {
+			tag.name = tag.name.substring(1);
+		}
+	}
+
+	tag = parseType(tag, config);
+
 	return tag;
 }
 
 module.exports = parseTag;
+
+module.exports.parseType = parseType;
