@@ -8,6 +8,7 @@ module.exports.getTagSectionKeys = require('./src/getTagSectionKeys');
 module.exports.variablePragmas = require('./src/getTagSectionKeys').variablePragmas;
 module.exports.parseTag = require('./src/parseTag');
 module.exports.setDefaultValue = require('./src/setDefaultValue');
+module.exports.setDefaultObj = require('./src/setDefaultObj');
 module.exports.setFlags = require('./src/setFlags');
 module.exports.parseFlag = require('./src/setFlags').parseFlag;
 module.exports.setOptional = require('./src/setOptional');
@@ -18,7 +19,7 @@ if (typeof global === 'object') {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./src/getLocationIndexes":4,"./src/getTagSectionKeys":5,"./src/parseComments":6,"./src/parseTag":7,"./src/setDefaultValue":8,"./src/setFlags":9,"./src/setOptional":10,"./src/trimLine":11}],2:[function(require,module,exports){
+},{"./src/getLocationIndexes":4,"./src/getTagSectionKeys":5,"./src/parseComments":6,"./src/parseTag":7,"./src/setDefaultObj":8,"./src/setDefaultValue":9,"./src/setFlags":10,"./src/setOptional":11,"./src/trimLine":12}],2:[function(require,module,exports){
 function getUID(length, characters) {
 	var charactersLength, result = '';
 
@@ -184,18 +185,20 @@ const setOptional = require('./setOptional');
 
 const setDefaultValue = require('./setDefaultValue');
 
+const setDefaultObj = require('./setDefaultObj');
+
 const getLocationIndexes = require('./getLocationIndexes');
 
 const nestedBlocks = {};
 
-function parseComments(input) {
+function parseComments(input, config = {}) {
   let matches;
 
   while (matches = input.match(/([\S\s]*?){(\s(?:[^}{]+|{(?:[^}{]+|{[^}{]*})*})*)}([\S\s]*)/im)) {
     const uid = getiUID(24);
     const nestedInput = '/**' + matches[2] + '\n*/';
     input = matches[1] + uid + matches[3];
-    nestedBlocks[uid] = parseComments(nestedInput);
+    nestedBlocks[uid] = parseComments(nestedInput, config);
   }
 
   let comments = {
@@ -225,7 +228,7 @@ function parseComments(input) {
     comments = setDefaultValue(comments, key);
   });
   comments.tags = comments.tags.map(tag => {
-    tag = parseTag(tag);
+    tag = parseTag(tag, config);
 
     if (tag.desc in nestedBlocks) {
       tag.desc = nestedBlocks[tag.desc];
@@ -241,6 +244,7 @@ function parseComments(input) {
       }
     }
 
+    tag = setDefaultObj(tag, config);
     return tag;
   }).filter(x => x);
   return comments;
@@ -248,7 +252,7 @@ function parseComments(input) {
 
 module.exports = parseComments;
 
-},{"./getLocationIndexes":4,"./parseTag":7,"./setDefaultValue":8,"./setOptional":10,"./trimLine":11,"es5-util/js/getUID":2}],7:[function(require,module,exports){
+},{"./getLocationIndexes":4,"./parseTag":7,"./setDefaultObj":8,"./setDefaultValue":9,"./setOptional":11,"./trimLine":12,"es5-util/js/getUID":2}],7:[function(require,module,exports){
 "use strict";
 
 const getTagSectionKeys = require('./getTagSectionKeys');
@@ -262,8 +266,30 @@ const setDefaultValue = require('./setDefaultValue');
 const {
   variablePragmas
 } = getTagSectionKeys;
+const variableReturnPragmas = [...variablePragmas, ...['@return']];
 
-function parseTag(line) {
+function parseType(obj, config = {}) {
+  config = { ...{
+      typeToArray: false
+    },
+    ...config
+  };
+  const tagName = obj.tagName[0] === '@' ? obj.tagName : '@' + obj.tagName;
+
+  if (config.typeToArray && variableReturnPragmas.includes(tagName)) {
+    obj.type = obj.type.split('|');
+  }
+
+  return obj;
+}
+
+function parseTag(line, config = {}) {
+  config = { ...{
+      prefixPragmas: null,
+      prefixVariables: null
+    },
+    ...config
+  };
   let tagName, remaining, matches;
   [, tagName, remaining] = line.match(/^(\S*)\s*([\S\s]*)/);
   const keys = getTagSectionKeys(tagName);
@@ -292,12 +318,78 @@ function parseTag(line) {
     tag = setDefaultValue(tag);
   }
 
+  if (tag.tagName) {
+    if (config.prefixPragmas === true && tag.tagName[0] !== '@') {
+      tag.tagName = '@' + tag.tagName;
+    }
+
+    if (config.prefixPragmas === false && tag.tagName[0] === '@') {
+      tag.tagName = tag.tagName.substring(1);
+    }
+  }
+
+  if (tag.name) {
+    if (config.prefixVariables === true && tag.name[0] !== '$') {
+      tag.name = '$' + tag.name;
+    }
+
+    if (config.prefixVariables === false && tag.name[0] === '$') {
+      tag.name = tag.name.substring(1);
+    }
+  }
+
+  tag = parseType(tag, config);
   return tag;
 }
 
 module.exports = parseTag;
+module.exports.parseType = parseType;
 
-},{"./getTagSectionKeys":5,"./setDefaultValue":8,"./setFlags":9,"./setOptional":10}],8:[function(require,module,exports){
+},{"./getTagSectionKeys":5,"./setDefaultValue":9,"./setFlags":10,"./setOptional":11}],8:[function(require,module,exports){
+"use strict";
+
+function setDefaultObj(obj, config = {}) {
+  config = { ...{
+      defaultObj: false
+    },
+    ...config
+  };
+  const defaultObj = {};
+
+  if (config.defaultObj && obj.desc !== null && typeof obj.desc === 'object' && 'tags' in obj.desc) {
+    obj.desc.tags.forEach(tag => {
+      if ('defaultObj' in tag) {
+        defaultObj[tag.name] = tag.defaultObj;
+        delete tag.defaultObj;
+      } else if ('defaultValue' in tag) {
+        defaultObj[tag.name] = tag.defaultValue;
+      } else {
+        const types = Array.isArray(tag.type) ? tag.type : tag.type.split('|');
+
+        if (types.includes('object')) {
+          defaultObj[tag.name] = {};
+        } else if (types.includes('array')) {
+          defaultObj[tag.name] = [];
+        } else if (types.includes('int')) {
+          defaultObj[tag.name] = 0;
+        } else if (types.includes('bool')) {
+          defaultObj[tag.name] = false;
+        } else if (types.includes('string')) {
+          defaultObj[tag.name] = '';
+        } else {
+          defaultObj[tag.name] = null;
+        }
+      }
+    });
+    obj.defaultObj = defaultObj;
+  }
+
+  return obj;
+}
+
+module.exports = setDefaultObj;
+
+},{}],9:[function(require,module,exports){
 "use strict";
 
 const safeParse = require('es5-util/js/safeParse');
@@ -322,7 +414,7 @@ function setDefaultValue(obj, key = 'desc') {
 
 module.exports = setDefaultValue;
 
-},{"es5-util/js/safeParse":3}],9:[function(require,module,exports){
+},{"es5-util/js/safeParse":3}],10:[function(require,module,exports){
 "use strict";
 
 const specialChar = '!';
@@ -353,7 +445,7 @@ function setFlags(tag, key = 'desc') {
 module.exports = setFlags;
 module.exports.parseFlag = parseFlag;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 function setOptional(tag, key = 'desc', forceOptionalKey = true) {
@@ -386,7 +478,7 @@ function setOptional(tag, key = 'desc', forceOptionalKey = true) {
 
 module.exports = setOptional;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 function trimLine(line) {
