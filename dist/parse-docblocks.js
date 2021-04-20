@@ -156,6 +156,7 @@ module.exports = getLocationIndexes;
 "use strict";
 
 const variablePragmas = ['@global', '@param', '@type', '@staticvar', '@property', '@property-read', '@property-write'];
+const typedPragmas = [...variablePragmas, ...['@var', '@return']];
 
 function getTagSectionKeys(tag) {
   if (variablePragmas.includes(tag)) {
@@ -171,6 +172,7 @@ function getTagSectionKeys(tag) {
 
 module.exports = getTagSectionKeys;
 module.exports.variablePragmas = variablePragmas;
+module.exports.typedPragmas = typedPragmas;
 
 },{}],6:[function(require,module,exports){
 "use strict";
@@ -264,9 +266,9 @@ const setOptional = require('./setOptional');
 const setDefaultValue = require('./setDefaultValue');
 
 const {
-  variablePragmas
+  variablePragmas,
+  typedPragmas
 } = getTagSectionKeys;
-const variableReturnPragmas = [...variablePragmas, ...['@return']];
 
 function parseType(obj, config = {}) {
   config = { ...{
@@ -276,7 +278,7 @@ function parseType(obj, config = {}) {
   };
   const tagName = obj.tagName[0] === '@' ? obj.tagName : '@' + obj.tagName;
 
-  if (config.typeToArray && variableReturnPragmas.includes(tagName)) {
+  if (config.typeToArray && typedPragmas.includes(tagName)) {
     obj.type = obj.type.split('|');
   }
 

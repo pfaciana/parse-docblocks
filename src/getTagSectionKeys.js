@@ -1,4 +1,5 @@
 const variablePragmas = ['@global', '@param', '@type', '@staticvar', '@property', '@property-read', '@property-write'];
+const typedPragmas = [...variablePragmas, ...['@var', '@return']];
 
 function getTagSectionKeys(tag) {
 	if (variablePragmas.includes(tag)) {
@@ -15,3 +16,4 @@ function getTagSectionKeys(tag) {
 
 module.exports = getTagSectionKeys;
 module.exports.variablePragmas = variablePragmas;
+module.exports.typedPragmas = typedPragmas;

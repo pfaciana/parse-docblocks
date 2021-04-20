@@ -2,15 +2,14 @@ const getTagSectionKeys = require('./getTagSectionKeys');
 const setFlags = require('./setFlags');
 const setOptional = require('./setOptional');
 const setDefaultValue = require('./setDefaultValue');
-const {variablePragmas} = getTagSectionKeys;
-const variableReturnPragmas = [...variablePragmas, ...['@return']];
+const {variablePragmas, typedPragmas} = getTagSectionKeys;
 
 function parseType(obj, config = {}) {
 	config = {...{typeToArray: false}, ...config};
 
 	const tagName = obj.tagName[0] === '@' ? obj.tagName : '@' + obj.tagName;
 
-	if (config.typeToArray && variableReturnPragmas.includes(tagName)) {
+	if (config.typeToArray && typedPragmas.includes(tagName)) {
 		obj.type = obj.type.split('|');
 	}
 
