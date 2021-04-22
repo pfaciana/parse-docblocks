@@ -7,6 +7,8 @@ const table = [
 	[` **   content to be trimmed `, 'content to be trimmed'],
 	[`  **  * content to be trimmed     `, 'content to be trimmed'],
 	[` /** `, ''],
+	[` /* `, ''],
+	[` */ `, ''],
 	[` */`, ''],
 ];
 
