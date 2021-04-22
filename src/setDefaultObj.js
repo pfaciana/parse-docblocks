@@ -10,7 +10,7 @@ function setDefaultObj(obj, config = {}) {
 			} else if ('defaultValue' in tag) {
 				defaultObj[tag.name] = tag.defaultValue;
 			} else {
-				const types = Array.isArray(tag.type) ? tag.type : tag.type.split('|');
+				const types = Array.isArray(tag.type) ? tag.type : (typeof tag.type === 'string' ? tag.type.split('|') : []);
 				if (types.includes('object')) {
 					defaultObj[tag.name] = {};
 				} else if (types.includes('array')) {
