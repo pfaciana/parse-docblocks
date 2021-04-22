@@ -10,7 +10,7 @@ function parseFlag(input) {
 }
 
 function setFlags(tag, key = 'desc') {
-	let parts = tag[key].split(`\n${specialChar}`);
+	let parts = (tag[key] ??= '').split(`\n${specialChar}`);
 
 	if (parts.length < 2) {
 		return tag;

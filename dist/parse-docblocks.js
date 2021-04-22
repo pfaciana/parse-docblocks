@@ -310,7 +310,7 @@ function parseType(obj, config = {}) {
   const tagName = obj.tagName[0] === '@' ? obj.tagName : '@' + obj.tagName;
 
   if (config.typeToArray && typedPragmas.includes(tagName)) {
-    obj.type = obj.type.split('|');
+    obj.type = typeof obj.type === 'string' ? obj.type.split('|') : obj.type;
   }
 
   return obj;
@@ -334,8 +334,12 @@ function parseTag(line, config = {}) {
   };
 
   if (matches = remaining.match(new RegExp(`^${'(\\S*)\\s*'.repeat(keys.length - 1)}([\\S\\s]*)`))) {
-    for (let i = 1; i <= keys.length; i++) {
-      tag[keys[i - 1]] = matches[i].trim();
+    if (keys.length > matches.filter(Boolean).length && matches.filter(Boolean).length > 1) {
+      tag[keys[1]] = matches[1].trim();
+    } else {
+      for (let i = 1; i <= keys.length; i++) {
+        tag[keys[i - 1]] = matches[i].trim();
+      }
     }
   }
 
@@ -344,7 +348,7 @@ function parseTag(line, config = {}) {
   if (variablePragmas.includes(tagName)) {
     tag = setOptional(tag);
 
-    if (tag.type[0] === '{' && tag.type.slice(-1) === '}') {
+    if (tag.type && tag.type[0] === '{' && tag.type.slice(-1) === '}') {
       tag.type = tag.type.slice(1, -1);
     }
 
@@ -464,7 +468,9 @@ function parseFlag(input) {
 }
 
 function setFlags(tag, key = 'desc') {
-  let parts = tag[key].split(`\n${specialChar}`);
+  var _tag$key;
+
+  let parts = ((_tag$key = tag[key]) !== null && _tag$key !== void 0 ? _tag$key : tag[key] = '').split(`\n${specialChar}`);
 
   if (parts.length < 2) {
     return tag;

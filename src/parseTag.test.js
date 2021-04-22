@@ -121,6 +121,13 @@ const table = [
 		desc: '',
 		optional: false,
 	}, {typeToArray: true}],
+	['@param $output', {
+		tagName: '@param',
+		type: null,
+		name: '$output',
+		desc: '',
+		optional: false,
+	}, {typeToArray: true}],
 ];
 
 test.each(table)('%s',
