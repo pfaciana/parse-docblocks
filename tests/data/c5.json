@@ -1,0 +1,267 @@
+{
+	"description": "Time-related parameters that normally require integer values ('year', 'month', 'week', 'dayofyear', 'day', 'dayofweek', 'dayofweek_iso', 'hour', 'minute', 'second') accept arrays of integers for some values of 'compare'. When 'compare' is 'IN' or 'NOT IN', arrays are accepted; when 'compare' is 'BETWEEN' or 'NOT BETWEEN', arrays of two valid values are required. See individual argument descriptions for accepted values.",
+	"summary": "Constructor.",
+	"tags": [
+		{
+			"desc": "",
+			"name": null,
+			"tagName": "@since",
+			"type": "3.7.0"
+		},
+		{
+			"desc": "The $inclusive logic was updated to include all times within the date range.",
+			"name": null,
+			"tagName": "@since",
+			"type": "4.0.0"
+		},
+		{
+			"desc": "Introduced 'dayofweek_iso' time type parameter.",
+			"name": null,
+			"tagName": "@since",
+			"type": "4.1.0"
+		},
+		{
+			"desc": {
+				"description": null,
+				"summary": "Array of date query clauses.",
+				"tags": [
+					{
+						"desc": {
+							"description": null,
+							"summary": null,
+							"tags": [
+								{
+									"defaultValue": "'post_date'",
+									"desc": "The column to query against. If undefined, inherits the value of\nthe `$default_column` parameter. Accepts 'post_date', 'post_date_gmt',\n'post_modified','post_modified_gmt', 'comment_date', 'comment_date_gmt'.",
+									"name": "$column",
+									"optional": true,
+									"tagName": "@type",
+									"type": "string"
+								},
+								{
+									"defaultValue": "'='",
+									"desc": "The comparison operator. Accepts '=', '!=', '>', '>=', '<', '<=',\n'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'.",
+									"name": "$compare",
+									"optional": true,
+									"tagName": "@type",
+									"type": "string"
+								},
+								{
+									"defaultValue": "'OR'",
+									"desc": "The boolean relationship between the date queries. Accepts 'OR' or 'AND'.",
+									"name": "$relation",
+									"optional": true,
+									"tagName": "@type",
+									"type": "string"
+								},
+								{
+									"desc": {
+										"description": null,
+										"summary": "An array of first-order clause parameters, or another fully-formed date query.",
+										"tags": [
+											{
+												"desc": {
+													"description": null,
+													"summary": "Date to retrieve posts before. Accepts `strtotime()`-compatible string, or array of 'year', 'month', 'day' values.",
+													"tags": [
+														{
+															"defaultValue": "empty. Accepts any four-digit year",
+															"desc": "The four-digit year.",
+															"name": "$year",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														},
+														{
+															"defaultValue": "(string:empty)|(array:1). Accepts numbers 1-12",
+															"desc": "Optional when passing array.The month of the year.",
+															"name": "$month",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														},
+														{
+															"defaultValue": "(string:empty)|(array:1). Accepts numbers 1-31",
+															"desc": "Optional when passing array.The day of the month.",
+															"name": "$day",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														}
+													]
+												},
+												"name": "$before",
+												"optional": true,
+												"tagName": "@type",
+												"type": "string|array"
+											},
+											{
+												"desc": {
+													"description": null,
+													"summary": "Date to retrieve posts after. Accepts `strtotime()`-compatible string, or array of 'year', 'month', 'day' values.",
+													"tags": [
+														{
+															"defaultValue": "empty",
+															"desc": "The four-digit year. Accepts any four-digit year.",
+															"name": "$year",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														},
+														{
+															"defaultValue": "(string:empty)|(array:12)",
+															"desc": "Optional when passing array. The month of the year. Accepts numbers 1-12.",
+															"name": "$month",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														},
+														{
+															"defaultValue": "(string:empty)|(array:last day of month)",
+															"desc": "Optional when passing array.The day of the month. Accepts numbers 1-31.",
+															"name": "$day",
+															"optional": false,
+															"tagName": "@type",
+															"type": "string"
+														}
+													]
+												},
+												"name": "$after",
+												"optional": true,
+												"tagName": "@type",
+												"type": "string|array"
+											},
+											{
+												"defaultValue": "the value of\ntop-level `$column`",
+												"desc": "Used to add a clause comparing a column other than the\ncolumn specified in the top-level `$column` parameter. Accepts\n'post_date', 'post_date_gmt', 'post_modified', 'post_modified_gmt',\n'comment_date', 'comment_date_gmt'.",
+												"name": "$column",
+												"optional": true,
+												"tagName": "@type",
+												"type": "string"
+											},
+											{
+												"defaultValue": "'='",
+												"desc": "The comparison operator. Accepts '=', '!=', '>', '>=',\n'<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'. 'IN',\n'NOT IN', 'BETWEEN', and 'NOT BETWEEN'. Comparisons support\narrays in some time-related parameters.",
+												"name": "$compare",
+												"optional": true,
+												"tagName": "@type",
+												"type": "string"
+											},
+											{
+												"defaultValue": false,
+												"desc": "Include results from dates specified in 'before' or\n'after'.",
+												"name": "$inclusive",
+												"optional": true,
+												"tagName": "@type",
+												"type": "bool"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The four-digit year number. Accepts any four-digit year\nor an array of years if `$compare` supports it.",
+												"name": "$year",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The two-digit month number. Accepts numbers 1-12 or an\narray of valid numbers if `$compare` supports it.",
+												"name": "$month",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The week number of the year. Accepts numbers 0-53 or an\narray of valid numbers if `$compare` supports it.",
+												"name": "$week",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"desc": "The day number of the year. Accepts numbers 1-366 or an\narray of valid numbers if `$compare` supports it.",
+												"name": "$dayofyear",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The day of the month. Accepts numbers 1-31 or an array\nof valid numbers if `$compare` supports it.",
+												"name": "$day",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The day number of the week. Accepts numbers 1-7 (1 is\nSunday) or an array of valid numbers if `$compare` supports it.",
+												"name": "$dayofweek",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The day number of the week (ISO). Accepts numbers 1-7\n(1 is Monday) or an array of valid numbers if `$compare` supports it.",
+												"name": "$dayofweek_iso",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The hour of the day. Accepts numbers 0-23 or an array\nof valid numbers if `$compare` supports it.",
+												"name": "$hour",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The minute of the hour. Accepts numbers 0-60 or an array\nof valid numbers if `$compare` supports it.",
+												"name": "$minute",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											},
+											{
+												"defaultValue": "empty",
+												"desc": "The second of the minute. Accepts numbers 0-60 or an\narray of valid numbers if `$compare` supports it.",
+												"name": "$second",
+												"optional": true,
+												"tagName": "@type",
+												"type": "int|array"
+											}
+										]
+									},
+									"name": "...$0",
+									"optional": true,
+									"tagName": "@type",
+									"type": "array"
+								}
+							]
+						},
+						"name": "...$0",
+						"optional": false,
+						"tagName": "@type",
+						"type": "array"
+					}
+				]
+			},
+			"name": "$date_query",
+			"optional": false,
+			"tagName": "@param",
+			"type": "array"
+		},
+		{
+			"defaultValue": "'post_date'.\nAccepts 'post_date', 'post_date_gmt', 'post_modified', 'post_modified_gmt',\n'comment_date', 'comment_date_gmt'",
+			"desc": "Default column to query against.",
+			"name": "$default_column",
+			"optional": true,
+			"tagName": "@param",
+			"type": "string"
+		}
+	]
+}

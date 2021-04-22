@@ -1,0 +1,32 @@
+/*
+function acf_esc_html_deep( $value ) {
+
+	// array
+	if( is_array($value) ) {
+
+		$value = array_map('acf_esc_html_deep', $value);
+
+	// object
+	} elseif( is_object($value) ) {
+
+		$lets = get_object_lets( $value );
+
+		foreach( $lets as $k => $v ) {
+
+			$value->{$k} = acf_esc_html_deep( $v );
+
+		}
+
+	// string
+	} elseif( is_string($value) ) {
+
+		$value = esc_html($value);
+
+	}
+
+
+	// return
+	return $value;
+
+}
+*/

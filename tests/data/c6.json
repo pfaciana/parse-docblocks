@@ -1,0 +1,5 @@
+{
+	"description": "// array if( is_array($value) ) {\n\n$value = array_map('acf_esc_html_deep', $value);\n\n// object } elseif( is_object($value) ) {\n\n$lets = get_object_lets( $value );\n\nforeach( $lets as $k => $v ) {\n\n$value->{$k} = acf_esc_html_deep( $v );\n\n}\n\n// string } elseif( is_string($value) ) {\n\n$value = esc_html($value);\n\n}\n\n\n\n// return return $value;\n\n}",
+	"summary": "function acf_esc_html_deep( $value ) {",
+	"tags": []
+}
