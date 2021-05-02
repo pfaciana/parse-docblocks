@@ -7,6 +7,17 @@
 	 *
 	 * def
 	 *
+	 * @license   https://opensource.org/licenses/MIT MIT License
+	 * @license MIT License
+	 * @link http://php.net/sprintf Description of syntax.
+	 *
+	 * @see https://twig.symfony.com/doc/api.html#sandbox-extension for details
+	 * @see wpdb::insert()
+	 * @see inspect for the inspection state array format.
+	 * @uses \WP_Http::request() For default arguments information.
+	 * @used-by NS\WP_Http::request() For default arguments information.
+	 * @used-by Monolog\Processor\MemoryProcessor->__construct() for options
+	 *
 	 * @param string $name     Name
 	 * @param string $value    Value
 	 *                         Line 2 for Value

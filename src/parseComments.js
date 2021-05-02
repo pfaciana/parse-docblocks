@@ -1,11 +1,9 @@
 const getiUID = require('es5-util/js/getUID').getiUID;
 const parseTag = require('./parseTag');
 const trimLine = require('./trimLine');
-const setOptional = require('./setOptional');
-const setDefaultValue = require('./setDefaultValue');
-const setDefaultObj = require('./setDefaultObj');
+const runFilters = require('./filters');
 const getLocationIndexes = require('./getLocationIndexes');
-const {typedPragmas} = require('./getTagSectionKeys');
+const {isTypedPragma} = require('./getTagSectionKeys');
 
 function parseComments(input, config = {}) {
 	const nestedBlocks = {}, inlineBlocks = {};
@@ -25,7 +23,7 @@ function parseComments(input, config = {}) {
 		let matches;
 		while ((matches = input.match(/(.*)({[^{}]*})/im))) {
 			const uid = getiUID(24);
-			if (typedPragmas.includes(trimLine(matches[1]).split(/\s/)[0])) {
+			if (isTypedPragma(trimLine(matches[1]).split(/\s/)[0])) {
 				const nestedInput = '/**' + matches[2].slice(1, -1) + '\n*/';
 				nestedBlocks[uid] = matches[2];
 				input = input.replace(matches[2], uid);
@@ -61,25 +59,11 @@ function parseComments(input, config = {}) {
 		}
 		// Used with nesting blocks
 		['summary', 'description'].forEach(key => {
-			comments = setOptional(comments, key, false);
-			comments = setDefaultValue(comments, key);
+			comments = runFilters({obj: comments, key, config}, 'comment');
 		});
 		comments.tags = (comments.tags.map(tag => {
 			tag = parseTag(tag, config);
-			if (tag.desc in nestedBlocks) {
-				const uid = tag.desc;
-				tag.desc = nestedBlocks[uid];
-				delete nestedBlocks[uid];
-				if ('optional' in tag.desc) {
-					tag.optional = tag.desc.optional;
-					delete tag.desc.optional;
-				}
-				if ('defaultValue' in tag.desc) {
-					tag.defaultValue = tag.desc.defaultValue;
-					delete tag.desc.defaultValue;
-				}
-			}
-			tag = setDefaultObj(tag, config);
+			tag = runFilters({obj: tag, config, nestedBlocks}, 'tag');
 			return tag;
 		})).filter(x => x);
 

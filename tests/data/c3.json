@@ -111,7 +111,8 @@
 						"type": "bool"
 					},
 					{
-						"desc": "Whether queries can be performed on the front end for the post type\nas part of parse_request(). Endpoints would include:\n?post_type={post_type_key}\n?{post_type_key}={single_post_slug}\n?{post_type_query_var}={single_post_slug}\nIf not set, the default is inherited from $public.",
+						"defaultValue": "inherited from $public",
+						"desc": "Whether queries can be performed on the front end for the post type\nas part of parse_request(). Endpoints would include:\n?post_type={post_type_key}\n?{post_type_key}={single_post_slug}\n?{post_type_query_var}={single_post_slug}\nIf not set",
 						"name": "$publicly_queryable",
 						"optional": false,
 						"tagName": "@type",
@@ -165,7 +166,7 @@
 						"type": "string"
 					},
 					{
-						"defaultValue": "'WP_REST_Posts_Controller'",
+						"defaultValue": "WP_REST_Posts_Controller",
 						"desc": "REST API Controller class name.",
 						"name": "$rest_controller_class",
 						"optional": false,
@@ -181,14 +182,15 @@
 						"type": "int"
 					},
 					{
-						"desc": "The url to the icon to be used for this menu. Pass a base64-encoded\nSVG using a data URI, which will be colored to match the color scheme\n-- this should begin with 'data:image/svg+xml;base64,'. Pass the name\nof a Dashicons helper class to use a font icon, e.g.\n'dashicons-chart-pie'. Pass 'none' to leave div.wp-menu-image empty\nso an icon can be added via CSS. Defaults to use the posts icon.",
+						"defaultValue": "use the posts icon",
+						"desc": "The url to the icon to be used for this menu. Pass a base64-encoded\nSVG using a data URI, which will be colored to match the color scheme\n-- this should begin with 'data:image/svg+xml;base64,'. Pass the name\nof a Dashicons helper class to use a font icon, e.g.\n'dashicons-chart-pie'. Pass 'none' to leave div.wp-menu-image empty\nso an icon can be added via CSS.",
 						"name": "$menu_icon",
 						"optional": false,
 						"tagName": "@type",
 						"type": "string"
 					},
 					{
-						"defaultValue": "'post'",
+						"defaultValue": "post",
 						"desc": "The string to use to build the read, edit, and delete capabilities.\nMay be passed as an array to allow for alternative plurals when using\nthis argument as a base to construct the capabilities, e.g.\narray('story', 'stories').",
 						"name": "$capability_type",
 						"optional": false,
@@ -227,7 +229,7 @@
 						"type": "callable"
 					},
 					{
-						"defaultValue": "empty array",
+						"defaultValue": [],
 						"desc": "An array of taxonomy identifiers that will be registered for the\npost type. Taxonomies can be registered later with register_taxonomy()\nor register_taxonomy_for_object_type().",
 						"name": "$taxonomies",
 						"optional": false,
@@ -243,12 +245,14 @@
 						"type": "bool|string"
 					},
 					{
+						"defaultValue": "true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
 						"desc": {
 							"description": null,
-							"summary": "Triggers the handling of rewrites for this post type. To prevent rewrite, set to false. Defaults to true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
+							"summary": "Triggers the handling of rewrites for this post type. To prevent rewrite, set to false.",
 							"tags": [
 								{
-									"desc": "Customize the permastruct slug. Defaults to $post_type key.",
+									"defaultValue": "$post_type key",
+									"desc": "Customize the permastruct slug.",
 									"name": "$slug",
 									"optional": false,
 									"tagName": "@type",
@@ -279,7 +283,8 @@
 									"type": "bool"
 								},
 								{
-									"desc": "Endpoint mask to assign. If not specified and permalink_epmask is set,\ninherits from $permalink_epmask. If not specified and permalink_epmask\nis not set, defaults to EP_PERMALINK.",
+									"defaultValue": "EP_PERMALINK",
+									"desc": "Endpoint mask to assign. If not specified and permalink_epmask is set,\ninherits from $permalink_epmask. If not specified and permalink_epmask\nis not set",
 									"name": "$ep_mask",
 									"optional": false,
 									"tagName": "@type",
@@ -293,7 +298,8 @@
 						"type": "bool|array"
 					},
 					{
-						"desc": "Sets the query_var key for this post type. Defaults to $post_type\nkey. If false, a post type cannot be loaded at\n?{query_var}={post_slug}. If specified as a string, the query\n?{query_var_string}={post_slug} will be valid.",
+						"defaultValue": "$post_type\nkey. If false, a post type cannot be loaded at\n?{query_var}={post_slug}. If specified as a string, the query\n?{query_var_string}={post_slug} will be valid",
+						"desc": "Sets the query_var key for this post type.",
 						"name": "$query_var",
 						"optional": false,
 						"tagName": "@type",
@@ -316,7 +322,7 @@
 						"type": "bool"
 					},
 					{
-						"defaultValue": "empty array",
+						"defaultValue": [],
 						"desc": "Array of blocks to use as the default initial state for an editor\nsession. Each item should be an array containing block name and\noptional attributes.",
 						"name": "$template",
 						"optional": false,
@@ -340,7 +346,7 @@
 						"type": "bool"
 					},
 					{
-						"defaultValue": "'post.php?post=%d'",
+						"defaultValue": "post.php?post=%d",
 						"desc": "FOR INTERNAL USE ONLY! URL segment to use for edit link of\nthis post type.",
 						"name": "$_edit_link",
 						"optional": false,

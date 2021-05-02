@@ -48,7 +48,38 @@ const table = [
 				defaultObj: {a: 1, b: '2', c: {d: [], e: null}},
 			}],
 		}
-	}, {ref: {a: 1, b: '2', c: {d: [], e: null}}}, {defaultObj: true}],
+	}, {ref: {a: 1, b: '2', c: {d: [], e: null}}}, {defaultObj: true}], [{
+		desc: {
+			tags: [{
+				name: 'a',
+				type: 'object',
+			}, {
+				name: 'b',
+				type: 'array|int',
+			}, {
+				name: 'c',
+				type: 'int',
+			}, {
+				name: 'd',
+				type: 'bool',
+			}, {
+				name: 'e',
+				type: 'string',
+			}, {
+				name: 'f',
+				type: 'array|int',
+				defaultValue: 123
+			}],
+		}
+	}, {
+		a: {},
+		b: [],
+		c: 0,
+		d: false,
+		e: '',
+		f: 123,
+	}, {defaultObj: true}],
+
 ];
 
 test.each(table)('%s',

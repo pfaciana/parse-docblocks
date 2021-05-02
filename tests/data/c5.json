@@ -31,7 +31,7 @@
 							"summary": null,
 							"tags": [
 								{
-									"defaultValue": "'post_date'",
+									"defaultValue": "post_date",
 									"desc": "The column to query against. If undefined, inherits the value of\nthe `$default_column` parameter. Accepts 'post_date', 'post_date_gmt',\n'post_modified','post_modified_gmt', 'comment_date', 'comment_date_gmt'.",
 									"name": "$column",
 									"optional": true,
@@ -39,7 +39,7 @@
 									"type": "string"
 								},
 								{
-									"defaultValue": "'='",
+									"defaultValue": "=",
 									"desc": "The comparison operator. Accepts '=', '!=', '>', '>=', '<', '<=',\n'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'.",
 									"name": "$compare",
 									"optional": true,
@@ -47,7 +47,7 @@
 									"type": "string"
 								},
 								{
-									"defaultValue": "'OR'",
+									"defaultValue": "OR",
 									"desc": "The boolean relationship between the date queries. Accepts 'OR' or 'AND'.",
 									"name": "$relation",
 									"optional": true,
@@ -140,7 +140,7 @@
 												"type": "string"
 											},
 											{
-												"defaultValue": "'='",
+												"defaultValue": "=",
 												"desc": "The comparison operator. Accepts '=', '!=', '>', '>=',\n'<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'. 'IN',\n'NOT IN', 'BETWEEN', and 'NOT BETWEEN'. Comparisons support\narrays in some time-related parameters.",
 												"name": "$compare",
 												"optional": true,
@@ -236,17 +236,19 @@
 											}
 										]
 									},
-									"name": "...$0",
+									"name": "$0",
 									"optional": true,
 									"tagName": "@type",
-									"type": "array"
+									"type": "array",
+									"variadic": true
 								}
 							]
 						},
-						"name": "...$0",
+						"name": "$0",
 						"optional": false,
 						"tagName": "@type",
-						"type": "array"
+						"type": "array",
+						"variadic": true
 					}
 				]
 			},

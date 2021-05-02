@@ -3,6 +3,92 @@
 	"summary": "Manually set all the cookie arguments",
 	"tags": [
 		{
+			"desc": "MIT License",
+			"name": null,
+			"tagName": "@license",
+			"type": "https://opensource.org/licenses/MIT"
+		},
+		{
+			"desc": "MIT License",
+			"name": null,
+			"tagName": "@license",
+			"type": null
+		},
+		{
+			"desc": "Description of syntax.",
+			"name": null,
+			"tagName": "@link",
+			"type": "http://php.net/sprintf"
+		},
+		{
+			"desc": "for details",
+			"name": "https://twig.symfony.com/doc/api.html#sandbox-extension",
+			"tagName": "@see",
+			"type": null
+		},
+		{
+			"desc": "",
+			"name": {
+				"name": [
+					"wpdb",
+					"insert"
+				],
+				"namespace": []
+			},
+			"tagName": "@see",
+			"type": "method"
+		},
+		{
+			"desc": "for the inspection state array format.",
+			"name": {
+				"name": "inspect",
+				"namespace": []
+			},
+			"tagName": "@see",
+			"type": "function"
+		},
+		{
+			"desc": "For default arguments information.",
+			"name": {
+				"name": [
+					"WP_Http",
+					"request"
+				],
+				"namespace": []
+			},
+			"tagName": "@uses",
+			"type": "method"
+		},
+		{
+			"desc": "For default arguments information.",
+			"name": {
+				"name": [
+					"WP_Http",
+					"request"
+				],
+				"namespace": [
+					"NS"
+				]
+			},
+			"tagName": "@used-by",
+			"type": "method"
+		},
+		{
+			"desc": "for options",
+			"name": {
+				"name": [
+					"MemoryProcessor",
+					"__construct"
+				],
+				"namespace": [
+					"Monolog",
+					"Processor"
+				]
+			},
+			"tagName": "@used-by",
+			"type": "method"
+		},
+		{
 			"desc": "Name",
 			"name": "$name",
 			"optional": false,

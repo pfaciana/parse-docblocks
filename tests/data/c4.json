@@ -33,7 +33,8 @@
 				"summary": "Array or string of post status arguments.",
 				"tags": [
 					{
-						"desc": "A descriptive name for the post status marked\nfor translation. Defaults to value of $post_status.",
+						"defaultValue": "value of $post_status",
+						"desc": "A descriptive name for the post status marked\nfor translation.",
 						"name": "$label",
 						"optional": false,
 						"tagName": "@type",
@@ -132,12 +133,14 @@
 						"type": "bool|array",
 						"name": "$rewrite",
 						"optional": false,
+						"defaultValue": "true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
 						"desc": {
-							"summary": "Triggers the handling of rewrites for this post type. To prevent rewrite, set to false. Defaults to true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
+							"summary": "Triggers the handling of rewrites for this post type. To prevent rewrite, set to false.",
 							"description": null,
 							"tags": [
 								{
-									"desc": "Customize the permastruct slug. Defaults to $post_type key.",
+									"defaultValue": "$post_type key",
+									"desc": "Customize the permastruct slug.",
 									"name": "$slug",
 									"optional": false,
 									"tagName": "@type",
