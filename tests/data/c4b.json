@@ -14,8 +14,7 @@
 				"array"
 			],
 			"name": "wp_post_statuses",
-			"desc": "Inserts new post status object into the list",
-			"optional": false
+			"desc": "Inserts new post status object into the list"
 		},
 		{
 			"tagName": "param",
@@ -60,7 +59,6 @@
 						"defaultValue": "value of $post_status",
 						"desc": "A descriptive name for the post status marked\nfor translation.",
 						"name": "label",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool",
@@ -71,7 +69,6 @@
 						"defaultValue": "array of $label, twice",
 						"desc": "Descriptive text to use for nooped plurals.",
 						"name": "label_count",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool",
@@ -82,7 +79,6 @@
 						"defaultValue": "value of $internal",
 						"desc": "Whether to exclude posts with this post status\nfrom search results.",
 						"name": "exclude_from_search",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -92,7 +88,6 @@
 						"defaultValue": false,
 						"desc": "Whether the status is built-in. Core-use only.",
 						"name": "_builtin",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -102,7 +97,6 @@
 						"defaultValue": false,
 						"desc": "Whether posts of this status should be shown\nin the front end of the site.",
 						"name": "public",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -112,7 +106,6 @@
 						"defaultValue": false,
 						"desc": "Whether the status is for internal use only.",
 						"name": "internal",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -122,7 +115,6 @@
 						"defaultValue": false,
 						"desc": "Whether posts with this status should be protected.",
 						"name": "protected",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -132,7 +124,6 @@
 						"defaultValue": false,
 						"desc": "Whether posts with this status should be private.",
 						"name": "private",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -142,7 +133,6 @@
 						"defaultValue": "value of $public",
 						"desc": "Whether posts with this status should be publicly-\nqueryable.",
 						"name": "publicly_queryable",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -152,7 +142,6 @@
 						"defaultValue": "the opposite value\nof $internal",
 						"desc": "Whether to include posts in the edit listing for\ntheir post type.",
 						"name": "show_in_admin_all_list",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -162,7 +151,6 @@
 						"defaultValue": "the opposite value of $internal",
 						"desc": "Show in the list of statuses with post counts at\nthe top of the edit listings,\ne.g. All (12) | Published (9) | My Custom Status (2)",
 						"name": "show_in_admin_status_list",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -172,7 +160,6 @@
 						"defaultValue": false,
 						"desc": "Whether the post has a floating creation date.",
 						"name": "date_floating",
-						"optional": false,
 						"tagName": "type",
 						"type": [
 							"bool"
@@ -185,7 +172,6 @@
 							"array"
 						],
 						"name": "rewrite",
-						"optional": false,
 						"defaultValue": "true, using $post_type as slug. To specify rewrite rules, an array can be passed with any of these keys:",
 						"desc": {
 							"description": null,
@@ -195,7 +181,6 @@
 									"defaultValue": "$post_type key",
 									"desc": "Customize the permastruct slug.",
 									"name": "slug",
-									"optional": false,
 									"tagName": "type",
 									"type": [
 										"string"
@@ -231,7 +216,6 @@
 						],
 						"name": "a",
 						"desc": "Whether posts of this status should be shown\nin the front end of the site.",
-						"optional": false,
 						"defaultValue": 1
 					}
 				]

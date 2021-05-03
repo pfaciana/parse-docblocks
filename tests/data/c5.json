@@ -68,7 +68,6 @@
 															"defaultValue": "empty. Accepts any four-digit year",
 															"desc": "The four-digit year.",
 															"name": "$year",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														},
@@ -76,7 +75,6 @@
 															"defaultValue": "(string:empty)|(array:1). Accepts numbers 1-12",
 															"desc": "Optional when passing array.The month of the year.",
 															"name": "$month",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														},
@@ -84,7 +82,6 @@
 															"defaultValue": "(string:empty)|(array:1). Accepts numbers 1-31",
 															"desc": "Optional when passing array.The day of the month.",
 															"name": "$day",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														}
@@ -104,7 +101,6 @@
 															"defaultValue": "empty",
 															"desc": "The four-digit year. Accepts any four-digit year.",
 															"name": "$year",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														},
@@ -112,7 +108,6 @@
 															"defaultValue": "(string:empty)|(array:12)",
 															"desc": "Optional when passing array. The month of the year. Accepts numbers 1-12.",
 															"name": "$month",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														},
@@ -120,7 +115,6 @@
 															"defaultValue": "(string:empty)|(array:last day of month)",
 															"desc": "Optional when passing array.The day of the month. Accepts numbers 1-31.",
 															"name": "$day",
-															"optional": false,
 															"tagName": "@type",
 															"type": "string"
 														}
@@ -245,7 +239,6 @@
 							]
 						},
 						"name": "$0",
-						"optional": false,
 						"tagName": "@type",
 						"type": "array",
 						"variadic": true

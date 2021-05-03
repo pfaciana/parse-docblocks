@@ -23,7 +23,7 @@ function runFilters(args, type = 'tag') {
 			isUrlPragmas(obj.tagName) && (obj = parseUrl(obj));
 			isReferencePragmas(obj.tagName) && (obj = parseRelativeName(obj));
 			isVersionPragma(obj.tagName) && (obj = validateVersion(obj));
-			isVariablePragma(obj.tagName) && (obj = setOptional(obj));
+			(['@param', '@type'].includes(obj.tagName)) && (obj = setOptional(obj, 'desc', obj.tagName === '@param'));
 			isVariablePragma(obj.tagName) && (obj = setDefaultValue(obj));
 			obj = parseType(obj, config);
 			obj = setVariadic(obj);
