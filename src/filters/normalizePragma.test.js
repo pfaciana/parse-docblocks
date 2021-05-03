@@ -6,7 +6,6 @@ const table = [
 	['@usedby', '@used-by'],
 	['@used', '@uses'],
 	['@use', '@uses'],
-	['@opt_param', '@param'],
 ];
 
 test.each(table)('%s',

@@ -21,6 +21,7 @@ test.each(table)('%s',
 
 const table2 = [
 	['c4b'],
+	['c4c'],
 ];
 
 test.each(table2)('%s',

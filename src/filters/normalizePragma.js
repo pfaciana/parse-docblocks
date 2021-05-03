@@ -12,10 +12,6 @@ function normalizePragma(pragma) {
 		return '@uses';
 	}
 
-	if (pragma.endsWith('_param')) {
-		return '@param';
-	}
-
 	return pragma;
 }
 

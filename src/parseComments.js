@@ -1,7 +1,9 @@
 const getiUID = require('es5-util/js/getUID').getiUID;
+const isPlainObject = require('es5-util/js/isPlainObject');
 const parseTag = require('./parseTag');
 const trimLine = require('./trimLine');
 const runFilters = require('./filters');
+const {setDefaultObj} = runFilters;
 const getLocationIndexes = require('./getLocationIndexes');
 const {isTypedPragma} = require('./getTagSectionKeys');
 
@@ -66,6 +68,21 @@ function parseComments(input, config = {}) {
 			tag = runFilters({obj: tag, config, nestedBlocks}, 'tag');
 			return tag;
 		})).filter(x => x);
+		// Support for Google's @opt_param pragma
+		comments.tags = comments.tags.reduce((accumulator, currentTag) => {
+			if (currentTag.tagName === 'opt_param') {
+				let parentTag = accumulator.pop();
+				if (!isPlainObject(parentTag.desc)) {
+					parentTag.desc = {summary: parentTag.desc, description: null, tags: []};
+				}
+				parentTag.desc.tags.push(currentTag);
+				(parentTag.defaultObj ??= {})[currentTag.name] = (currentTag.defaultObj ?? currentTag.defaultValue ?? null);
+				accumulator.push(parentTag);
+			} else {
+				accumulator = [...accumulator, currentTag];
+			}
+			return accumulator;
+		}, []);
 
 		return comments;
 	}
