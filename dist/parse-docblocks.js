@@ -14,7 +14,7 @@ if (typeof global === 'object') {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./src/filters":5,"./src/getLocationIndexes":20,"./src/getTagSectionKeys":21,"./src/parseComments":22,"./src/parseTag":23,"./src/trimLine":24}],2:[function(require,module,exports){
+},{"./src/filters":5,"./src/getLocationIndexes":21,"./src/getTagSectionKeys":22,"./src/parseComments":23,"./src/parseTag":24,"./src/trimLine":25}],2:[function(require,module,exports){
 function getUID(length, characters) {
 	var charactersLength, result = '';
 
@@ -107,6 +107,8 @@ const setFlags = require('./setFlags');
 
 const setOptional = require('./setOptional');
 
+const setSignature = require('./setSignature');
+
 const setTagNamePrefix = require('./setTagNamePrefix');
 
 const setVariableNamePrefix = require('./setVariableNamePrefix');
@@ -136,6 +138,7 @@ function runFilters(args, type = 'tag') {
     case 'tag':
       obj = setFlags(obj);
       obj = unSwapNameAndType(obj);
+      ['@method'].includes(obj.tagName) && (obj = setSignature(obj));
       isUrlPragmas(obj.tagName) && (obj = parseUrl(obj));
       isReferencePragmas(obj.tagName) && (obj = parseRelativeName(obj));
       isVersionPragma(obj.tagName) && (obj = validateVersion(obj));
@@ -167,13 +170,14 @@ module.exports.setDefaultValue = setDefaultValue;
 module.exports.setDefaultObj = setDefaultObj;
 module.exports.setFlags = setFlags;
 module.exports.setOptional = setOptional;
+module.exports.setSignature = setSignature;
 module.exports.setTagNamePrefix = setTagNamePrefix;
 module.exports.setVariableNamePrefix = setVariableNamePrefix;
 module.exports.setVariadic = setVariadic;
 module.exports.unSwapNameAndType = unSwapNameAndType;
 module.exports.validateVersion = validateVersion;
 
-},{"./../getTagSectionKeys":21,"./parseRelativeName":7,"./parseType":8,"./parseUrl":9,"./promoteKeysFromNestedBlocks":10,"./setDefaultObj":11,"./setDefaultValue":12,"./setFlags":13,"./setOptional":14,"./setTagNamePrefix":15,"./setVariableNamePrefix":16,"./setVariadic":17,"./unSwapNameAndType":18,"./validateVersion":19}],6:[function(require,module,exports){
+},{"./../getTagSectionKeys":22,"./parseRelativeName":7,"./parseType":8,"./parseUrl":9,"./promoteKeysFromNestedBlocks":10,"./setDefaultObj":11,"./setDefaultValue":12,"./setFlags":13,"./setOptional":14,"./setSignature":15,"./setTagNamePrefix":16,"./setVariableNamePrefix":17,"./setVariadic":18,"./unSwapNameAndType":19,"./validateVersion":20}],6:[function(require,module,exports){
 "use strict";
 
 function normalizePragma(pragma) {
@@ -311,7 +315,7 @@ function parseType(obj, config = {}) {
 
 module.exports = parseType;
 
-},{"./../getTagSectionKeys":21}],9:[function(require,module,exports){
+},{"./../getTagSectionKeys":22}],9:[function(require,module,exports){
 "use strict";
 
 function isUrl(str) {
@@ -541,6 +545,54 @@ module.exports = setOptional;
 },{}],15:[function(require,module,exports){
 "use strict";
 
+function setSignature(obj) {
+  if (typeof obj !== 'object' || obj === null || !('type' in obj) || !('desc' in obj)) {
+    return obj;
+  }
+
+  if (typeof obj.type == 'string' && obj.type.includes('(')) {
+    obj.desc = obj.type + ' ' + obj.desc;
+    obj.type = null;
+  }
+
+  if (!obj.desc.indexOf('(')) {
+    return obj;
+  }
+
+  let openCount = 0,
+      endIndex = 0;
+
+  for (let i in obj.desc) {
+    if (obj.desc.hasOwnProperty(i)) {
+      if (obj.desc[i] === '(') {
+        openCount++;
+      }
+
+      if (obj.desc[i] === ')') {
+        openCount--;
+
+        if (openCount === 0) {
+          endIndex = +i + 1;
+          break;
+        }
+      }
+    }
+  }
+
+  if (!endIndex) {
+    return obj;
+  }
+
+  obj.name = obj.desc.substr(0, endIndex);
+  obj.desc = obj.desc.substr(endIndex).trim();
+  return obj;
+}
+
+module.exports = setSignature;
+
+},{}],16:[function(require,module,exports){
+"use strict";
+
 function setTagNamePrefix(obj, config = {}) {
   if (obj.tagName) {
     if (config.prefixPragmas === true && obj.tagName[0] !== '@') {
@@ -557,7 +609,7 @@ function setTagNamePrefix(obj, config = {}) {
 
 module.exports = setTagNamePrefix;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 function setVariableNamePrefix(obj, config = {}) {
@@ -576,7 +628,7 @@ function setVariableNamePrefix(obj, config = {}) {
 
 module.exports = setVariableNamePrefix;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 function setVariadic(obj, key = 'name') {
@@ -590,7 +642,7 @@ function setVariadic(obj, key = 'name') {
 
 module.exports = setVariadic;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 const {
@@ -608,7 +660,7 @@ function unSwapNameAndType(obj) {
 
 module.exports = unSwapNameAndType;
 
-},{"./../getTagSectionKeys":21}],19:[function(require,module,exports){
+},{"./../getTagSectionKeys":22}],20:[function(require,module,exports){
 "use strict";
 
 const invalidPrefixes = ['deprecated since ', 'since version ', 'since ', 'version '];
@@ -648,7 +700,7 @@ function validateVersion(obj) {
 module.exports = validateVersion;
 module.exports.isVersion = isVersion;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 function getLocationIndexes(lines) {
@@ -723,7 +775,7 @@ function getLocationIndexes(lines) {
 
 module.exports = getLocationIndexes;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 const variablePragmas = ['@global', '@param', '@opt_param', '@type', '@staticvar', '@property', '@property-read', '@property-write'];
@@ -775,7 +827,7 @@ module.exports.isVersionPragma = isVersionPragma;
 module.exports.isReferencePragmas = isReferencePragmas;
 module.exports.isUrlPragmas = isUrlPragmas;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 const getiUID = require('es5-util/js/getUID').getiUID;
@@ -902,7 +954,7 @@ function parseComments(input, config = {}) {
 
 module.exports = parseComments;
 
-},{"./filters":5,"./getLocationIndexes":20,"./getTagSectionKeys":21,"./parseTag":23,"./trimLine":24,"es5-util/js/getUID":2,"es5-util/js/isPlainObject":3}],23:[function(require,module,exports){
+},{"./filters":5,"./getLocationIndexes":21,"./getTagSectionKeys":22,"./parseTag":24,"./trimLine":25,"es5-util/js/getUID":2,"es5-util/js/isPlainObject":3}],24:[function(require,module,exports){
 "use strict";
 
 const normalizePragma = require('./filters/normalizePragma');
@@ -938,7 +990,7 @@ function parseTag(line, config = {}) {
 
 module.exports = parseTag;
 
-},{"./filters/normalizePragma":6,"./getTagSectionKeys":21}],24:[function(require,module,exports){
+},{"./filters/normalizePragma":6,"./getTagSectionKeys":22}],25:[function(require,module,exports){
 "use strict";
 
 function trimLine(line) {
