@@ -14,7 +14,7 @@ if (typeof global === 'object') {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./src/filters":4,"./src/getLocationIndexes":19,"./src/getTagSectionKeys":20,"./src/parseComments":21,"./src/parseTag":22,"./src/trimLine":23}],2:[function(require,module,exports){
+},{"./src/filters":5,"./src/getLocationIndexes":20,"./src/getTagSectionKeys":21,"./src/parseComments":22,"./src/parseTag":23,"./src/trimLine":24}],2:[function(require,module,exports){
 function getUID(length, characters) {
 	var charactersLength, result = '';
 
@@ -44,6 +44,18 @@ module.exports.getiUID = getiUID;
 module.exports.getUID16 = getUID16;
 
 },{}],3:[function(require,module,exports){
+function isPlainObject(value) {
+	if (typeof value !== 'object' || value == null) {
+		return false;
+	}
+
+	var Ctor = Object.getPrototypeOf(Object(value)).constructor;
+
+	return Ctor instanceof Ctor;
+}
+
+module.exports = isPlainObject;
+},{}],4:[function(require,module,exports){
 /*
  * Protection against
  *  - undefined
@@ -76,7 +88,7 @@ function safeParse(data, forceParse) {
 }
 
 module.exports = safeParse;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 const parseRelativeName = require('./parseRelativeName');
@@ -127,7 +139,7 @@ function runFilters(args, type = 'tag') {
       isUrlPragmas(obj.tagName) && (obj = parseUrl(obj));
       isReferencePragmas(obj.tagName) && (obj = parseRelativeName(obj));
       isVersionPragma(obj.tagName) && (obj = validateVersion(obj));
-      isVariablePragma(obj.tagName) && (obj = setOptional(obj));
+      ['@param', '@type'].includes(obj.tagName) && (obj = setOptional(obj, 'desc', obj.tagName === '@param'));
       isVariablePragma(obj.tagName) && (obj = setDefaultValue(obj));
       obj = parseType(obj, config);
       obj = setVariadic(obj);
@@ -161,7 +173,7 @@ module.exports.setVariadic = setVariadic;
 module.exports.unSwapNameAndType = unSwapNameAndType;
 module.exports.validateVersion = validateVersion;
 
-},{"./../getTagSectionKeys":20,"./parseRelativeName":6,"./parseType":7,"./parseUrl":8,"./promoteKeysFromNestedBlocks":9,"./setDefaultObj":10,"./setDefaultValue":11,"./setFlags":12,"./setOptional":13,"./setTagNamePrefix":14,"./setVariableNamePrefix":15,"./setVariadic":16,"./unSwapNameAndType":17,"./validateVersion":18}],5:[function(require,module,exports){
+},{"./../getTagSectionKeys":21,"./parseRelativeName":7,"./parseType":8,"./parseUrl":9,"./promoteKeysFromNestedBlocks":10,"./setDefaultObj":11,"./setDefaultValue":12,"./setFlags":13,"./setOptional":14,"./setTagNamePrefix":15,"./setVariableNamePrefix":16,"./setVariadic":17,"./unSwapNameAndType":18,"./validateVersion":19}],6:[function(require,module,exports){
 "use strict";
 
 function normalizePragma(pragma) {
@@ -177,16 +189,12 @@ function normalizePragma(pragma) {
     return '@uses';
   }
 
-  if (pragma.endsWith('_param')) {
-    return '@param';
-  }
-
   return pragma;
 }
 
 module.exports = normalizePragma;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 function trimName(name) {
@@ -266,7 +274,7 @@ function parseRelativeName(obj) {
 module.exports = parseRelativeName;
 module.exports.trimName = trimName;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 const getTagSectionKeys = require('./../getTagSectionKeys');
@@ -303,7 +311,7 @@ function parseType(obj, config = {}) {
 
 module.exports = parseType;
 
-},{"./../getTagSectionKeys":20}],8:[function(require,module,exports){
+},{"./../getTagSectionKeys":21}],9:[function(require,module,exports){
 "use strict";
 
 function isUrl(str) {
@@ -330,7 +338,7 @@ function parseUrl(obj) {
 module.exports = parseUrl;
 module.exports.isUrl = isUrl;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 const subKeysToPromote = ['optional', 'defaultValue'];
@@ -353,7 +361,7 @@ function promoteKeysFromNestedBlocks(obj, key, nestedBlocks) {
 
 module.exports = promoteKeysFromNestedBlocks;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 function setDefaultObj(obj, config = {}) {
@@ -397,7 +405,7 @@ function setDefaultObj(obj, config = {}) {
 
 module.exports = setDefaultObj;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 const safeParse = require('es5-util/js/safeParse');
@@ -457,7 +465,7 @@ function setDefaultValue(obj, key = 'desc') {
 
 module.exports = setDefaultValue;
 
-},{"es5-util/js/safeParse":3}],12:[function(require,module,exports){
+},{"es5-util/js/safeParse":4}],13:[function(require,module,exports){
 "use strict";
 
 const specialChar = '!';
@@ -490,7 +498,7 @@ function setFlags(tag, key = 'desc') {
 module.exports = setFlags;
 module.exports.parseFlag = parseFlag;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 function setOptional(tag, key = 'desc', forceOptionalKey = true) {
@@ -530,7 +538,7 @@ function setOptional(tag, key = 'desc', forceOptionalKey = true) {
 
 module.exports = setOptional;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 function setTagNamePrefix(obj, config = {}) {
@@ -549,7 +557,7 @@ function setTagNamePrefix(obj, config = {}) {
 
 module.exports = setTagNamePrefix;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 
 function setVariableNamePrefix(obj, config = {}) {
@@ -568,7 +576,7 @@ function setVariableNamePrefix(obj, config = {}) {
 
 module.exports = setVariableNamePrefix;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 function setVariadic(obj, key = 'name') {
@@ -582,7 +590,7 @@ function setVariadic(obj, key = 'name') {
 
 module.exports = setVariadic;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 const {
@@ -600,7 +608,7 @@ function unSwapNameAndType(obj) {
 
 module.exports = unSwapNameAndType;
 
-},{"./../getTagSectionKeys":20}],18:[function(require,module,exports){
+},{"./../getTagSectionKeys":21}],19:[function(require,module,exports){
 "use strict";
 
 const invalidPrefixes = ['deprecated since ', 'since version ', 'since ', 'version '];
@@ -640,7 +648,7 @@ function validateVersion(obj) {
 module.exports = validateVersion;
 module.exports.isVersion = isVersion;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 function getLocationIndexes(lines) {
@@ -715,7 +723,7 @@ function getLocationIndexes(lines) {
 
 module.exports = getLocationIndexes;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 const variablePragmas = ['@global', '@param', '@opt_param', '@type', '@staticvar', '@property', '@property-read', '@property-write'];
@@ -767,16 +775,22 @@ module.exports.isVersionPragma = isVersionPragma;
 module.exports.isReferencePragmas = isReferencePragmas;
 module.exports.isUrlPragmas = isUrlPragmas;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 const getiUID = require('es5-util/js/getUID').getiUID;
+
+const isPlainObject = require('es5-util/js/isPlainObject');
 
 const parseTag = require('./parseTag');
 
 const trimLine = require('./trimLine');
 
 const runFilters = require('./filters');
+
+const {
+  setDefaultObj
+} = runFilters;
 
 const getLocationIndexes = require('./getLocationIndexes');
 
@@ -855,7 +869,31 @@ function parseComments(input, config = {}) {
         nestedBlocks
       }, 'tag');
       return tag;
-    }).filter(x => x);
+    }).filter(x => x); // Support for Google's @opt_param pragma
+
+    comments.tags = comments.tags.reduce((accumulator, currentTag) => {
+      if (currentTag.tagName === 'opt_param') {
+        var _parentTag$defaultObj, _ref, _currentTag$defaultOb;
+
+        let parentTag = accumulator.pop();
+
+        if (!isPlainObject(parentTag.desc)) {
+          parentTag.desc = {
+            summary: parentTag.desc,
+            description: null,
+            tags: []
+          };
+        }
+
+        parentTag.desc.tags.push(currentTag);
+        ((_parentTag$defaultObj = parentTag.defaultObj) !== null && _parentTag$defaultObj !== void 0 ? _parentTag$defaultObj : parentTag.defaultObj = {})[currentTag.name] = (_ref = (_currentTag$defaultOb = currentTag.defaultObj) !== null && _currentTag$defaultOb !== void 0 ? _currentTag$defaultOb : currentTag.defaultValue) !== null && _ref !== void 0 ? _ref : null;
+        accumulator.push(parentTag);
+      } else {
+        accumulator = [...accumulator, currentTag];
+      }
+
+      return accumulator;
+    }, []);
     return comments;
   }
 
@@ -864,7 +902,7 @@ function parseComments(input, config = {}) {
 
 module.exports = parseComments;
 
-},{"./filters":4,"./getLocationIndexes":19,"./getTagSectionKeys":20,"./parseTag":22,"./trimLine":23,"es5-util/js/getUID":2}],22:[function(require,module,exports){
+},{"./filters":5,"./getLocationIndexes":20,"./getTagSectionKeys":21,"./parseTag":23,"./trimLine":24,"es5-util/js/getUID":2,"es5-util/js/isPlainObject":3}],23:[function(require,module,exports){
 "use strict";
 
 const normalizePragma = require('./filters/normalizePragma');
@@ -900,7 +938,7 @@ function parseTag(line, config = {}) {
 
 module.exports = parseTag;
 
-},{"./filters/normalizePragma":5,"./getTagSectionKeys":20}],23:[function(require,module,exports){
+},{"./filters/normalizePragma":6,"./getTagSectionKeys":21}],24:[function(require,module,exports){
 "use strict";
 
 function trimLine(line) {
