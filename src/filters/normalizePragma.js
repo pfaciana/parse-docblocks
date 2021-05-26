@@ -8,8 +8,12 @@ function normalizePragma(pragma) {
 		return '@used-by';
 	}
 
-	if (['@used', '@use'].includes(pragma)) {
+	if (['@used', '@use', '@depends'].includes(pragma)) {
 		return '@uses';
+	}
+
+	if (['@constant'].includes(pragma)) {
+		return '@const';
 	}
 
 	return pragma;
