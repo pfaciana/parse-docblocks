@@ -1,6 +1,6 @@
 {
 	"name": "parse-docblocks",
-	"version": "1.3.2",
+	"version": "1.3.3",
 	"description": "Parses PHPDoc and JSDoc style DocBlocks",
 	"main": "index.js",
 	"repository": {
