@@ -41,8 +41,8 @@ const output = parseComments(input, {
             "type": ["string"],
             "name": "$name",
             "desc": "Name",
-            "optional": false,
-            "defaultValue": "post",
+            "optional": true,
+            "defaultValue": "post"
         },
         {
             "tagName": "@return",
